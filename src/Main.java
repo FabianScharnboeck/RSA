@@ -1,11 +1,21 @@
+import javax.swing.*;
 import java.math.BigInteger;
 
 public class Main {
-
     public static void main(String[] args) {
-        RSA rsa = new RSA(BigInteger.valueOf(367), BigInteger.valueOf(139));
-        System.out.println("Message to encrypt: 2300");
-        System.out.println("Encryption: " + rsa.encrypt(BigInteger.valueOf(2300)));
-        System.out.println("Decryption: " + rsa.decrypt(rsa.encrypt(BigInteger.valueOf(2300))));
+        SwingUtilities.invokeLater(() -> {
+            try {
+                createAndShowGUI();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static  void createAndShowGUI() {
+        View view = new View("RSA");
+        RSA model = new RSA(BigInteger.valueOf(127), BigInteger.valueOf(179));
+        Controller c = new Controller(model, view);
+        c.initController();
     }
 }
