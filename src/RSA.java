@@ -1,31 +1,38 @@
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RSA {
 
     private BigInteger p,q;
     private BigInteger phiN;
-    private BigInteger N;
-    public BigInteger encryptionKey;
+    private BigInteger n;
+    private BigInteger encryptionKey;
+    private BigInteger decryptionKey;
 
     public RSA(BigInteger p, BigInteger q) {
         this.p = p;
         this.q = q;
-        N = p.multiply(q);
+        n = p.multiply(q);
         // phiN = (p-1)*(q-1)
         phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-
+        while(encryptionKey == null || !encryptionKey.isProbablePrime(0)) {
+            encryptionKey = BigInteger.probablePrime(phiN.bitLength()-1, new Random());
+            System.out.println("encryptionKey " + encryptionKey);
+        }
+        decryptionKey = RSA.calculateDecryptionKey(phiN, encryptionKey);
+        System.out.println("decryptionKey: " + decryptionKey);
     }
 
     /**
      * My first try of implementing the euclidean algorithm.
-     * @param phiN
-     * @param encryptionKey
+     * @param phiN PhiN = (p-1) * (q-1)
+     * @param encryptionKey Chose a prime number between 2 and phiN.
      * @return The decryption key is returned.
      */
-    public static BigInteger calculateDecryptionKey(BigInteger phiN, BigInteger encryptionKey) {
+    private static BigInteger calculateDecryptionKey(BigInteger phiN, BigInteger encryptionKey) {
         List<BigInteger> quotient = new ArrayList<>();
         List<BigInteger> rest = new ArrayList<>();
         List<BigInteger> s = new ArrayList<>();
@@ -59,5 +66,13 @@ public class RSA {
             decryptionKey = phiN.add(decryptionKey);
         }
         return decryptionKey;
+    }
+
+    public BigInteger encrypt(BigInteger message) {
+        return message.modPow(encryptionKey, n);
+    }
+
+    public BigInteger decrypt(BigInteger encryptedMessage) {
+        return encryptedMessage.modPow(decryptionKey, n);
     }
 }
