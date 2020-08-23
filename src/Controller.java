@@ -15,7 +15,7 @@ public class Controller {
                 (e -> {
                     try {
                         BigInteger encryptedMessage = rsa.
-                                encrypt(BigInteger.valueOf(Long.parseLong(view.getInput().getText())));
+                                encrypt(new BigInteger(view.getInput().getText()));
                         view.getOutput().setText(String.valueOf(encryptedMessage));
                     } catch (NumberFormatException f) {
                         JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "ERROR: " + f);
@@ -23,5 +23,11 @@ public class Controller {
                 });
         view.getCancel().addActionListener
                 (e -> view.getInput().setText(""));
+        view.getDecrypt().addActionListener
+                (e -> {
+                    BigInteger output = new BigInteger(view.getOutput().getText());
+                    BigInteger decryption = rsa.decrypt(output);
+                    view.getDecryptedOutput().setText(String.valueOf(decryption));
+                });
     }
 }

@@ -7,10 +7,12 @@ public class View {
     private JButton encrypt;
     private JTextField input;
     private JTextField output;
+    private JButton decrypt;
+    private JTextField decryptedOutput;
 
     public View(String title) {
         frame = new JFrame(title);
-        frame.getContentPane().setLayout(new GridLayout(2,2));
+        frame.getContentPane().setLayout(new GridLayout(3,3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,500);
         frame.setLocationRelativeTo(null);
@@ -20,11 +22,16 @@ public class View {
         input.setToolTipText("input");
         encrypt = new JButton("Encrypt");
         output = new JTextField();
-        output.setEnabled(false);
+        output.setEditable(false);
+        decrypt = new JButton("Decrypt");
+        decryptedOutput = new JTextField();
+        decryptedOutput.setEditable(false);
         frame.add(cancel);
         frame.add(input);
         frame.add(encrypt);
         frame.add(output);
+        frame.add(decrypt);
+        frame.add(decryptedOutput);
 
         frame.setVisible(true);
     }
@@ -67,5 +74,21 @@ public class View {
 
     public void setOutput(JTextField output) {
         this.output = output;
+    }
+
+    public JButton getDecrypt() {
+        return decrypt;
+    }
+
+    public void setDecrypt(JButton decrypt) {
+        this.decrypt = decrypt;
+    }
+
+    public JTextField getDecryptedOutput() {
+        return decryptedOutput;
+    }
+
+    public void setDecryptedOutput(JTextField decryptedOutput) {
+        this.decryptedOutput = decryptedOutput;
     }
 }
